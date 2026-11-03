@@ -6,6 +6,8 @@ import com.taskapp.domain.entity.TaskStatus;
 import com.taskapp.repository.TaskRepository;
 import com.taskapp.service.TaskService;
 import java.time.Instant;
+import java.util.List;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,11 @@ public class TaskServiceImpl implements TaskService {
         Task task = new Task(request.title(), request.description(), request.dueDate(),
                 TaskStatus.OPEN, request.priority(), now, now);
         return taskRepository.save(task);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Task> listTasks() {
+        return taskRepository.findAll(Sort.by(Sort.Direction.ASC, "created"));
     }
 }

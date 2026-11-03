@@ -5,6 +5,8 @@ import com.taskapp.domain.dto.TaskDto;
 import com.taskapp.mapper.TaskMapper;
 import com.taskapp.service.TaskService;
 import jakarta.validation.Valid;
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,5 +29,11 @@ public class TaskController {
     public ResponseEntity<TaskDto> createTask(@Valid @RequestBody CreateTaskRequestDto dto) {
         var task = taskService.createTask(taskMapper.fromDto(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(taskMapper.toDto(task));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskDto>> listTasks() {
+        var tasks = taskService.listTasks().stream().map(taskMapper::toDto).toList();
+        return ResponseEntity.ok(tasks);
     }
 }
