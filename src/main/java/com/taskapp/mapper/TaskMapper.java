@@ -5,6 +5,8 @@ import com.taskapp.domain.dto.CreateTaskRequestDto;
 import com.taskapp.domain.dto.TaskDto;
 import com.taskapp.domain.entity.Task;
 import org.springframework.stereotype.Component;
+import com.taskapp.domain.UpdateTaskRequest;
+import com.taskapp.domain.dto.UpdateTaskRequestDto;
 
 @Component
 public class TaskMapper {
@@ -15,5 +17,10 @@ public class TaskMapper {
     public TaskDto toDto(Task task) {
         return new TaskDto(task.getId(), task.getTitle(), task.getDescription(),
                 task.getDueDate(), task.getPriority(), task.getStatus());
+    }
+
+    public UpdateTaskRequest fromDto(UpdateTaskRequestDto dto) {
+        return new UpdateTaskRequest(dto.title(), dto.description(), dto.dueDate(),
+                dto.status(), dto.priority());
     }
 }

@@ -2,6 +2,7 @@ package com.taskapp.controller;
 
 import com.taskapp.domain.dto.ErrorResponseDto;
 import java.util.Comparator;
+import com.taskapp.exception.TaskNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -31,5 +32,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDto> handleInvalidParameter(MethodArgumentTypeMismatchException ex) {
         return ResponseEntity.badRequest().body(new ErrorResponseDto("El identificador debe ser un UUID valido"));
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleTaskNotFound(TaskNotFoundException ex) {
+        return ResponseEntity.badRequest().body(new ErrorResponseDto(ex.getMessage()));
     }
 }

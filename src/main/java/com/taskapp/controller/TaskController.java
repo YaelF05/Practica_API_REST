@@ -6,6 +6,10 @@ import com.taskapp.mapper.TaskMapper;
 import com.taskapp.service.TaskService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
+import com.taskapp.domain.dto.UpdateTaskRequestDto;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +39,12 @@ public class TaskController {
     public ResponseEntity<List<TaskDto>> listTasks() {
         var tasks = taskService.listTasks().stream().map(taskMapper::toDto).toList();
         return ResponseEntity.ok(tasks);
+    }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable UUID taskId,
+                                             @Valid @RequestBody UpdateTaskRequestDto dto) {
+        var task = taskService.updateTask(taskId, taskMapper.fromDto(dto));
+        return ResponseEntity.ok(taskMapper.toDto(task));
     }
 }
